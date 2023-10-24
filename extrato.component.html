@@ -1,0 +1,37 @@
+<div class="extrato-container">
+    <h1>Extrato de Conta Corrente</h1>
+    <button (click)="adicionarLancamento()">Adicionar Lançamento</button>
+    <div class="date-filter">
+      <label for="dataInicial">Data Inicial</label>
+      <input type="date" id="dataInicial" [(ngModel)]="dataInicial" (change)="atualizarExtrato()">
+      <label for="dataFinal">Data Final</label>
+      <input type="date" id="dataFinal" [(ngModel)]="dataFinal" (change)="atualizarExtrato()">
+    </div>
+    <table class="extrato-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descrição</th>
+          <th>Data</th>
+          <th>Valor</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lancamento of lancamentos">
+          <td>{{ lancamento.Id }}</td>
+          <td>{{ lancamento.Descricao }}</td>
+          <td>{{ lancamento.Data | date }}</td>
+          <td [ngClass]="{'negativo': lancamento.Valor < 0}">{{ lancamento.Valor | currency }}</td>
+          <td>{{ lancamento.Status }}</td>
+          <td>
+            <button (click)="editarLancamento(lancamento)">Editar</button>
+            <button (click)="cancelarLancamento(lancamento)" *ngIf="lancamento.Status === 'Válido'">Cancelar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="total">Total: {{ calcularTotal() | currency }}</p>
+  </div>
+  
